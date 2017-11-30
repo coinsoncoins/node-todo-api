@@ -7,6 +7,7 @@ let bodyParser = require('body-parser');
 let {mongoose} = require('./db/mongoose');
 let {Todo} = require('./models/todo');
 let {User} = require('./models/user');
+const {authenticate} = require('./middleware/authenticate');
 const {ObjectID} = require('mongodb');
 
 let app = express();
@@ -110,6 +111,11 @@ app.post('/users', (req, res) => {
   console.log(req.body)
 })
 
+
+
+app.get('/users/me', authenticate, (req, res) => {
+  res.send(req.user);
+})
 
 app.listen(process.env.PORT, () => {
   console.log(`started on port ${process.env.PORT}`);
